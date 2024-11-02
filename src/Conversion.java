@@ -3,6 +3,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.DecimalFormat;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ public class Conversion implements Comparable<Conversion> {
 
     public void nuevaConversion() {
         try {
-            //Cliente HTTP
+            // Cliente HTTP
             HttpClient client = HttpClient.newHttpClient();
             // Solicitud
             HttpRequest request = HttpRequest.newBuilder()
@@ -42,11 +43,22 @@ public class Conversion implements Comparable<Conversion> {
             // Parseo del JSON en un objeto ConversionOdbm
             ConversionOdbm conversionOdbm = gson.fromJson(json, ConversionOdbm.class);
             this.tarifa = conversionOdbm.conversion_rate();
-            System.out.println("Conversión exitosa: " + this);
+            //System.out.println("Conversión exitosa: " + this);
 
         } catch (IOException | InterruptedException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    // Método para convertir un monto de la moneda de origen a la moneda de destino
+    public String montoTotal(double monto) {
+        nuevaConversion();
+        String formato = "#,##0.00"; // Define el patrón de formato
+        DecimalFormat decimalFormat = new DecimalFormat(formato);
+        String valor = decimalFormat.format(monto * tarifa);
+        String valorTarifa = decimalFormat.format(tarifa);
+        return "Conversión de " + origen + " a " + destino + " con una tarifa de " + valorTarifa+ "\n" +
+                "El total es = " + valor;
     }
 
     @Override
@@ -58,4 +70,16 @@ public class Conversion implements Comparable<Conversion> {
     public int compareTo(Conversion o) {
         return Double.compare(this.tarifa, o.tarifa);
     }
+
+/*    // Método main para probar la conversión
+    public static void main(String[] args) {
+        // Crear una instancia de Conversion
+        Conversion conversion = new Conversion("USD", "EUR");
+        conversion.nuevaConversion(); // Obtener la tarifa
+
+        // Supongamos que el usuario quiere convertir 100 USD a EUR
+//        double montoOriginal = 100.0;
+//        double montoConvertido = conversion.convertirMonto(montoOriginal);
+//        System.out.println("Monto convertido: " + montoConvertido + " " + conversion.destino);
+    }*/
 }

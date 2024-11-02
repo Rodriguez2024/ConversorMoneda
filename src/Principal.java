@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class Principal {
     public static void main(String[] args) throws IOException, InterruptedException {
         Scanner lectura = new Scanner(System.in);
@@ -10,32 +11,40 @@ public class Principal {
             Menu linea = new Menu();
             System.out.println(linea.imprimeMenu());
             opcion = lectura.nextLine();
+            double monto = 0;
 
-            Conversion comunicacion;
+            // Solo se pide el monto si no se elige salir
+            if (!opcion.equals("7")) {
+                System.out.println("Cual es el monto a convertir: ");
+                monto = Double.parseDouble(lectura.nextLine());
+            }
+
+            Conversion miConversion;
             switch (opcion) {
                 case "1":
-                    comunicacion = new Conversion("USD", "ARS");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("USD", "ARS");
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "2":
-                    comunicacion = new Conversion("ARS", "USD");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("ARS", "USD");
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "3":
-                    comunicacion = new Conversion("USD", "BRL");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("USD", "BRL");
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "4":
-                    comunicacion = new Conversion("BRL", "USD");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("BRL", "USD");
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "5":
-                    comunicacion = new Conversion("USD", "COP");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("USD", "COP");
+                    System.out.println("El dinero a convertir es = " + monto);
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "6":
-                    comunicacion = new Conversion("COP", "USD");
-                    comunicacion.nuevaConversion();
+                    miConversion = new Conversion("COP", "USD");
+                    System.out.println(miConversion.montoTotal(monto));
                     break;
                 case "7":
                     System.out.println("Gracias por utilizar esta plataforma!");
